@@ -59,10 +59,16 @@ const gameController = (function(){
         
         playMove(index){
             if(gameBoard.getBoard()[index] == 'X' || gameBoard.getBoard()[index] == 'O'){
-                return 'Invalid move'
+                console.log('Invalid move')
             }else{
                 gameBoard.setMarker(index, currentPlayer.marker)
+                this.switchPlayer()
+                console.log('Its ' + currentPlayer.name + ' turn')
+                
+                
             }
+
+
 
         },
         resetGame(){
@@ -81,9 +87,13 @@ const gameController = (function(){
 
 })();
 
-gameBoard.setMarker(4, playerOne.marker)
-gameBoard.setMarker(3, playerTwo.marker)
+gameController.playMove(1)
+gameController.playMove(0)
 
 console.log(gameBoard.getBoard())
+
+
+
+
 
 
