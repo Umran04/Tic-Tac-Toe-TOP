@@ -44,6 +44,13 @@ const gameController = (function(){
     let gameOver = false
     let winner = null
 
+    const winningCombos = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ]
+      
+
     return{
         getPlayer(){
             return currentPlayer 
@@ -56,14 +63,35 @@ const gameController = (function(){
             }else{}
 
         },
+
+        isGameWon(){
+            winningCombos.forEach((combo) => {
+                let [a,b,c] = combo
+                if(
+                gameBoard.getBoard()[a] == currentPlayer.marker && 
+                gameBoard.getBoard()[b] == currentPlayer.marker && 
+                gameBoard.getBoard()[c] == currentPlayer.marker){
+                    winner = currentPlayer
+                    gameOver = true
+                    console.log('Game over ' + winner.name + ' wins')
+                    return true
+                }
+            })
+            
+        },
         
         playMove(index){
             if(gameBoard.getBoard()[index] == 'X' || gameBoard.getBoard()[index] == 'O'){
                 console.log('Invalid move')
-            }else{
+            }else {
                 gameBoard.setMarker(index, currentPlayer.marker)
-                this.switchPlayer()
-                console.log('Its ' + currentPlayer.name + ' turn')
+                
+                this.isGameWon()
+
+                if(gameOver == false){
+                    this.switchPlayer()
+                    console.log('Its ' + currentPlayer.name + 's turn')
+                }
                 
                 
             }
@@ -72,13 +100,10 @@ const gameController = (function(){
 
         },
         resetGame(){
-            if(gameOver === true){
-                gameBoard.reset()
-                gameOver = false
-                winner = null
-                currentPlayer = playerOne
-            }
-            
+            gameBoard.reset()
+            gameOver = false
+            winner = null
+            currentPlayer = playerOne
         }
 
         
@@ -87,13 +112,11 @@ const gameController = (function(){
 
 })();
 
-gameController.playMove(1)
 gameController.playMove(0)
+gameController.playMove(2)
+gameController.playMove(3)
+gameController.playMove(5)
+gameController.playMove(6)
+gameController.resetGame()
 
 console.log(gameBoard.getBoard())
-
-
-
-
-
-
